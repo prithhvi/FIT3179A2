@@ -1,152 +1,174 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Vega-Lite Bar Chart</title>
-    <meta charset="utf-8" />
 
-    <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.5.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0"></script>
+<head>
+  <title>Vega-Lite Bar Chart</title>
+  <meta charset="utf-8" />
 
-    <style media="screen">
-      /* Add space between Vega-Embed links  */
-      .vega-actions a {
-        margin-right: 5px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Happiness around the world </h1>
-    <!-- Container for the visualization -->
-    <div id="vis"></div>
-    <p>These charts below showo the level of happiness aroudn the world compared to eeach other and many different factors</p>
-    <div id= "vis2"></div>
-    <div id= "vis3"></div>
-    <div id = "vis4"></div>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.5.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0"></script>
 
-
-    <script>
-      // Assign the specification to a local variable vlSpec.
-      var vlSpec = {
-"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "width": 800,
-"height": 450,
-"title": "happiness points around the world",
-"projection": {"type": "equalEarth"}, "layer": [
-{
-"data": {
-"url": "https://raw.githubusercontent.com/JiazhouLiu/FIT3179/main/VegaLite/2_symbol_map/js/ne_110m_admin_0_countries.topojson",
-"format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
-},
-"mark": {"type": "geoshape", "fill": "lightgray", "stroke": "black"}
-},
-
-{
-"data": {
-"url": "https://raw.githubusercontent.com/JiazhouLiu/FIT3179/main/VegaLite/2_symbol_map/data/earthquake.csv"
-},
-"mark": {"type": "square", "tooltip": {"content": "data"}}, "encoding": {
-"longitude": {"field": "longitude", "type": "quantitative"},
-"latitude": {"field": "latitude", "type": "quantitative"},
-"size": {
-"field": "mag",
-"type": "quantitative",
-} }
-} ]
-}
-
-// this is for the second graph
-
-var barchart = {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": { "text": "Happiest countries" },
-  "width": 200,
-  "height": {"step": 16},
-  "data": {"url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv"},
-  "encoding": {
-    "y": {
-      "field": "Country",
-      "type": "nominal",
-      "axis": null
+  <style media="screen">
+    /* Add space between Vega-Embed links  */
+    .vega-actions a {
+      margin-right: 5px;
     }
-  },
-  "layer": [{
-    "mark": {"type": "bar", "color": "#ddd"},
-    "encoding": {
-      "x": {
-        "aggregate": "mean",
-        "field": "happiness_score",
-        "scale": {"domain": [0, 10]},
-        "title": "Happiness score"
+  </style>
+</head>
+
+<body>
+  <h1>Happiness around the world </h1>
+  <!-- Container for the visualization -->
+  <div id="vis"></div>
+  <p>These charts below showo the level of happiness aroudn the world compared to eeach other and many different factors
+  </p>
+  <div id="vis2"></div>
+  <div id="vis3"></div>
+  <div id="vis4"></div>
+
+
+  <script>
+    // Assign the specification to a local variable vlSpec.
+    var vlSpec = {
+
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": "Happiness chart",
+      "width": 800,
+      "height": 400,
+      "projection": { "type": "equalEarth" },
+      "data": {
+        "url": "https://raw.githubusercontent.com/JiazhouLiu/FIT3179/main/VegaLite/3_choropleth_map/js/ne_110m_admin_0_countries.topojson",
+        "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+      },
+
+      "transform": [
+        {
+          "lookup": "properties.NAME",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv"
+            },
+            "key": "Country",
+            "fields": ["happiness_score"]
+          }
+        },
+        // { "calculate": "datum.Active + 0.1", "as": "happiness_score" }
+      ],
+      "mark": { "type": "geoshape" },
+      "encoding": {
+        "color": {
+          "field": "happiness_score",
+          "type": "quantitative",
+          "scale": { "type": "log" }
+        },
+        "tooltip": [
+          {
+            "field": "properties.NAME", "type": "nominal", "title":
+              "Country"
+          },
+          { "field": "happiness_score", "type": "quantitative" }
+        ]
       }
     }
-  }, {
-    "mark": {"type": "text", "align": "left", "x": 5},
-    "encoding": {
-      "text": {"field": "Country"},
-      "detail": {"aggregate": "count"}
+
+
+    // this is for the second graph
+
+    var barchart = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": { "text": "Happiest countries" },
+      "width": 200,
+      "height": { "step": 16 },
+      "data": { "url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv" },
+      "encoding": {
+        "y": {
+          "field": "Country",
+          "type": "nominal",
+          "axis": null
+        }
+      },
+      "layer": [{
+        "mark": { "type": "bar", "color": "#ddd" },
+        "encoding": {
+          "x": {
+            "aggregate": "mean",
+            "field": "happiness_score",
+            "scale": { "domain": [0, 10] },
+            "title": "Happiness score"
+          }
+        }
+      }, {
+        "mark": { "type": "text", "align": "left", "x": 5 },
+        "encoding": {
+          "text": { "field": "Country" },
+          "detail": { "aggregate": "count" }
+        }
+      }]
     }
-  }]
-}
 
-var scatter = {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": { "text": "Correlation between health and freeedom" },
-  "data": {"url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv"},
-  "transform": [{
-    "filter": {"and": [
-      {"field": "health", "valid": true},
-      {"field": "freedom", "valid": true}
-    ]}
-  }],
-  "mark": "rect",
-  "width": 300,
-  "height": 200,
-  "encoding": {
-    "x": {
-      "bin": {"maxbins":60},
-      "field": "health",
-      "type": "quantitative"
-    },
-    "y": {
-      "bin": {"maxbins": 40},
-      "field": "freedom",
-      "type": "quantitative"
-    },
-    "color": {
-      "aggregate": "count",
-      "type": "quantitative"
+    var scatter = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": { "text": "Correlation between health and freeedom" },
+      "data": { "url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv" },
+      "transform": [{
+        "filter": {
+          "and": [
+            { "field": "health", "valid": true },
+            { "field": "freedom", "valid": true }
+          ]
+        }
+      }],
+      "mark": "rect",
+      "width": 300,
+      "height": 200,
+      "encoding": {
+        "x": {
+          "bin": { "maxbins": 60 },
+          "field": "health",
+          "type": "quantitative"
+        },
+        "y": {
+          "bin": { "maxbins": 40 },
+          "field": "freedom",
+          "type": "quantitative"
+        },
+        "color": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      },
+      "config": {
+        "view": {
+          "stroke": "transparent"
+        }
+      }
     }
-  },
-  "config": {
-    "view": {
-      "stroke": "transparent"
+
+    var bubbleChart = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": { "text": "Corruption vs Health and its impact againsr Happiness" },
+      "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and binned acceleration on size.",
+      "data": { "url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv" },
+      "mark": "point",
+      "encoding": {
+        "x": { "field": "health", "type": "quantitative" },
+        "y": { "field": "cpi_score", "type": "quantitative" },
+        "size": { "field": "happiness_score", "type": "quantitative" }
+      }
     }
-  }
-}
-
-var bubbleChart = {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": { "text": "Corruption vs Health and its impact againsr Happiness" },
-  "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and binned acceleration on size.",
-   "data": {"url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv"},
-  "mark": "point",
-  "encoding": {
-    "x": {"field": "health", "type": "quantitative"},
-    "y": {"field": "cpi_score", "type": "quantitative"},
-    "size": {"field": "happiness_score", "type": "quantitative"}
-  }
-}
 
 
 
-    
 
-      // Embed the visualization in the container with id `vis`
-      vegaEmbed('#vis', vlSpec);
-      vegaEmbed('#vis2',barchart);
-      vegaEmbed('#vis3',scatter);
-      vegaEmbed('#vis4',bubbleChart);
 
-    </script>
-  </body>
+    // Embed the visualization in the container with id `vis`
+    vegaEmbed('#vis', vlSpec);
+    vegaEmbed('#vis2', barchart);
+    vegaEmbed('#vis3', scatter);
+    vegaEmbed('#vis4', bubbleChart);
+
+  </script>
+</body>
+
 </html>
