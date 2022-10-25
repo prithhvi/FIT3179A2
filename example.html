@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head >
+
   <title>Vega-Lite Bar Chart</title>
+  <link rel = "stylesheet" href="styles.css">
   <meta charset="utf-8" />
 
   <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
@@ -18,14 +20,111 @@
 </head>
 
 <body>
+  <div class = "wholepage">
   <h1>Happiness around the world </h1>
   <!-- Container for the visualization -->
-  <div id="vis"></div>
-  <p>These charts below showo the level of happiness aroudn the world compared to eeach other and many different factors
-  </p>
-  <div id="vis2"></div>
-  <div id="vis3"></div>
-  <div id="vis4"></div>
+  
+  <div class = "r1">
+
+    <div class ="c1">
+      <div class="parernt"id="vis"></div>
+    </div>
+    
+    <div class = "c2">
+      <p>The World Happiness Report is a publication of the Sustainable Development Solutions Network, powered by the Gallup World Poll data. The <span style="color: yellow;">lowest happiness score is 0 </span>and the <span style="color: blue;">happiest score is 7</span>. A score of 4 generally means that the person is satisfied, this has also been observed to be the score of the average person.
+
+        The  visualisation to the left shows the world happiness levels based on their respective corruption index score.
+
+        <br>
+        <br>
+
+        <br>
+        <br>
+
+        The map visualisation displays the world map and the happiness levels across every country. The colour of the country is determined by their happiness score a score of 7 is represented by the colour blue, and a score of 0 is represented by the colour yellow. Most countries show a happiness level of at least 4, <span style="color: yellow;"></span>Afghanistan </span>seems to be the country the lowest happiness score.
+
+<span style="color: blue;">Australia, Norway , Canada </span>are a few of the countries which have which have a happiness rating of above 7.
+
+        
+        
+      </p>
+    </div>
+  
+  </div>
+  <div class="parernt"id="vis"></div>
+
+ <br>
+
+  
+
+  <div class = "r1">
+
+    <div class ="c1">
+      <div class="child2"id="vis3"></div>
+    </div>
+    
+    <div class = "c2">
+      <p>Many people may assume money brings happiness, looking at this chart does prove this theory as most of the counts of happiness scores above 7 come from countries with a GDP of greater than 1. The counties with the lower GDP are shown to be of lower happiness level scores
+        
+      </p>
+    </div>
+  
+  </div>
+
+
+
+  <div class = "child2"id="vis3"></div>
+
+
+ <br>
+
+  <div class = "r1">
+
+    <div class ="c1">
+      <div class="child2"id="vis4"></div>
+    </div>
+    
+    <div class = "c2">
+      <p>Although many people may assume the countries with the highest corruption index may be less happy, this chart clearly indicates that <span style="color: lightblue;">European countries</span> have a very high happiness score. It can also be seen that countries with a lower corruption index seemingly have a lower happiness score, such as the <span style="color:darkblue">African countries</span>. 
+
+        It can be seen that <span style="color: red;">Australia’s </span>corruption index has gone up however the happiness score seems to be a little bit higher.
+        
+        
+      </p>
+    </div>
+  
+  </div>
+
+  <div class = "child3"id="vis4"></div>
+
+
+ <br>
+
+
+ <br>
+ <br>
+
+  <div class = "r1">
+
+    <div class ="c1">
+      <div class="child2"id="vis5"></div>
+    </div>
+    
+    <div class = "c2">
+      <p>The line chart depicts the changes in the happiness score of continents over the years. Zooming into the line chart displayed below the main figure, it can be seen when <span style="color:darkblue">Africa's</span> happiness score went down from 2016-2018, the <span style="color: lightblue;">European countries</span>happiness score had gone up. It can also be noted that the continents over the years maintain a difference in happiness score within the range of 1
+      </p>
+    </div>
+  
+  </div>
+
+  <div class = "child4"id="vis5"></div>
+
+  
+
+
+  <!-- <div class = "child1" id="vis2"></div> -->
+
+</div>
 
 
   <script>
@@ -36,7 +135,7 @@
       "title": "Happiness chart",
       "width": 800,
       "height": 400,
-      "projection": { "type": "equalEarth" },
+      "projection": { "type": "equalEarth"},
       "data": {
         "url": "https://raw.githubusercontent.com/JiazhouLiu/FIT3179/main/VegaLite/3_choropleth_map/js/ne_110m_admin_0_countries.topojson",
         "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
@@ -74,7 +173,7 @@
 
 
     // this is for the second graph
-
+    /*
     var barchart = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "title": { "text": "Happiest countries" },
@@ -106,31 +205,32 @@
         }
       }]
     }
+    */
 
-    var scatter = {
+    var scatter =  {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": { "text": "Correlation between health and freeedom" },
+      "title": { "text": "Correlation between GDP and Happiness" },
       "data": { "url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv" },
       "transform": [{
         "filter": {
           "and": [
-            { "field": "health", "valid": true },
-            { "field": "freedom", "valid": true }
+            { "field": "gdp_per_capita", "valid": true },
+            { "field": "happiness_score", "valid": true }
           ]
         }
       }],
       "mark": "rect",
-      "width": 300,
-      "height": 200,
+      "width": 760,
+      "height": 400,
       "encoding": {
         "x": {
           "bin": { "maxbins": 60 },
-          "field": "health",
+          "field": "gdp_per_capita",
           "type": "quantitative"
         },
         "y": {
           "bin": { "maxbins": 40 },
-          "field": "freedom",
+          "field": "happiness_score",
           "type": "quantitative"
         },
         "color": {
@@ -145,30 +245,148 @@
       }
     }
 
+
     var bubbleChart = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": { "text": "Corruption vs Health and its impact againsr Happiness" },
-      "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and binned acceleration on size.",
-      "data": { "url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv" },
-      "mark": "point",
-      "encoding": {
-        "x": { "field": "health", "type": "quantitative" },
-        "y": { "field": "cpi_score", "type": "quantitative" },
-        "size": { "field": "happiness_score", "type": "quantitative" }
-      }
+      "width": 770,
+      "height": 400,
+"title": "Correlation between Corruption index score and happiness",
+"data": {
+"url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv"
+},
+"params": [
+{
+"name": "Continent_selection",
+"bind": {
+"input": "select",
+"options": [
+null,
+"North America",
+"South America",
+"Europe",
+"Africa",
+"Asia",
+"Oceania"
+],
+"labels":[
+"Show All",
+"North America",
+"South America",
+"Europe",
+"Africa",
+"Asia",
+"Oceania"
+],
+"name": "Continent Selection: "
+}
+}
+],
+"selection":{
+  "continent_highlight": {
+"type": "multi",
+"fields": ["continent"],
+"bind": "legend"
+}
+},
+
+"transform": [
+
+{
+"filter": "Continent_selection == null || datum.continent == Continent_selection"},
+
+],
+"mark": "circle",
+"encoding": {
+  "x": {
+"field": "cpi_score",
+"type": "quantitative",
+"title": "Corruption index score"
+
+},
+
+"y": {
+"field": "happiness_score",
+"type": "quantitative",
+"title":"Happiness score"
+},
+
+
+"color": {
+"field": "continent",
+"type": "nominal"
+},
+
+"opacity": {
+"condition": {"selection": "continent_highlight", "value": 0.6},
+"value": 0.2},
+
+"size": {
+"field": "cpi_score",
+"type": "quantitative",
+"legend": {"format": ".1s"}
+}
+}
     }
 
 
-
+var lineChart = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "https://raw.githubusercontent.com/prithhvi/FIT3179A2/main/data/WorldHappiness_Corruption_2015_2020.csv"},
+  "title": { "text": "Happiness of continents over the years" },
+"vconcat":[{
+   "mark": "line",
+   "width": 760,
+      "height": 400,
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonth", "field": "Year",
+      "axis": {"format": "%Y"},
+      "scale": {"domain": {"param": "brush"}}
+    },
+    "y": {
+      "aggregate": "max", "field": "happiness_score", "type": "quantitative"
+    },
+    "color": {
+      "field": "continent",
+      "scale": {"scheme": "category20b"}
+    }
+  }
+},
+{
+ "mark": "line",
+ "params": [
+{"name": "brush", "select": {"type": "interval",
+"encodings": ["x"]}}
+],
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonth", "field": "Year",
+      "axis": {"format": "%Y"}
+    },
+    "y": {
+      "aggregate": "max", "field": "happiness_score", "type": "quantitative"
+    },
+    "color": {
+      "field": "continent",
+      "scale": {"scheme": "category21b"}
+    }
+  }
+}
+]
+}
 
 
     // Embed the visualization in the container with id `vis`
-    vegaEmbed('#vis', vlSpec);
-    vegaEmbed('#vis2', barchart);
-    vegaEmbed('#vis3', scatter);
-    vegaEmbed('#vis4', bubbleChart);
+   
+    vegaEmbed('#vis', vlSpec,{"actions":false});
+    vegaEmbed('#vis3', scatter,{"actions":false});
+    vegaEmbed('#vis4', bubbleChart,{"actions":false});
+    vegaEmbed('#vis5',lineChart,{"actions":false});
+    // vegaEmbed('#vis2', barchart,{"actions":false});
 
   </script>
 </body>
 
+
 </html>
+
